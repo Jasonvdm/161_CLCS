@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage{amsmath,qtree,textcomp}
+\usepackage{amsmath,qtree,textcomp,enumitem}
 %\usepackage{fullpage}
 \usepackage[top=1in, bottom=1in, left=0.8in, right=1in]{geometry}
 \usepackage{multicol}
@@ -22,9 +22,12 @@ Bridge Eimon -- \texttt{beimon@stanford.edu} -- 05716372}
 % Problems:
 
 \section*{Theory}
-\begin{enumerate}
+\begin{enumerate}[label=(\alph*)]
     \item 
-    \item We will show that this modified algorithm still works because for all i and j there exists a k such that $LCS\big(cut(A,i), cut(B,j)\big) \le LCS\big(cut(A,k), cut(B,j)\big)$ 
+    \item We will show that this modified algorithm still works because $\forall i,j \text{ } \exists k \text{ } LCS\big(cut(A,i), cut(B,j)\big) \le LCS\big(cut(A,k), cut(B,0)\big)$.\\
+    For $LCS\big(cut(A,i), cut(B,j)\big)$, we have three options. $LCS\big(cut(A,i), cut(B,j)\big)$ can be 0, 1, or greater than one. In the first case, if the longest common subsequence is 0, there are no common characters in the two strings, so $\forall k \text{ } LCS\big(cut(A,k), cut(B,0)\big) = 0$. In the second case where the longest common subsequence between $cut(A,i)$ and $cut(B,j)$ is 1, there is at least one character in common between the two strings, so $\forall k \text{ } LCS\big(cut(A,k), cut(B,0)\big) \ge 1$ since at least the one character the two strings share will be a common subsequence, and there could be more depending on the cut (i.e. the longest common subsequence between AB and BA is one, but the longest common subsequence between AB and AB is two).\\
+    If $LCS\big(cut(A,i), cut(B,j)\big) > 1$, then there exist a sequence $<X_1,...,X_s>$ in both $cut(A,i)$ and $cut(B,j)$ which is the longest common subsequence. If $cut(B,j)$ preserves the order of $<X_1,...,X_s>$, then we know that $LCS\big(cut(A,i), cut(B,j)\big) \le LCS\big(cut(A,i), cut(B,0)\big)$ since the longest common subsequence $<X_1,...,X_s>$ is in both $cut(A,i) \text{ and } cut(B,0)$ in the same order. If $cut(B,j)$ does not preserve the order of $<X_1,...,X_s>$, then since it is a different cut of $B$, we must have that $cut(B,0)$ has the elements $<X_{cut+1},...,X_s,X_1,...X_{cut}>$. In order to get a common subsequence in a cut of $A$ of at least the size of $LCS\big(cut(A,i), cut(B,j)\big)$, we must ensure that elements $<X_1,...,X_s>$ are also in the order $<X_{cut+1},...,X_s,X_1,...X_{cut}>$. We can do this by finding the index of $X_{cut}$ in $cut(A,i)$ and cutting there to ensure that $X_{cut+1}$ is the first element in the common subsequence in the new array. Thus, in the array $cut(cut(A,i),A.index(X_{cut}))$ the key elements are in order $<X_{cut+1},...,X_s,X_1,...X_{cut}>$. We can rewrite $cut(cut(A,i),A.index(X_{cut})) = cut(A,i+C.index(X_{cut})) \text{ where } C = cut(A,i)$. Thus, there is a value for k such that $<X_{cut+1},...,X_s,X_1,...X_{cut}>$ is a common subsequence, so $LCS\big(cut(A,i), cut(B,j)\big) \le LCS\big(cut(A,i+C.index(X_{cut}), cut(B,0)\big)$ since all the elements in $LCS\big(cut(A,i), cut(B,j)\big)$ are in the same order in $cut(A,i+C.index(X_{cut})$ and $cut(B,0)$.\\
+    Lastly, we just need to prove that $\forall i,j \text{ } \exists k \text{ } LCS\big(cut(A,i), cut(B,j)\big) \le LCS\big(cut(A,k), cut(B,0)\big)$ is sufficient to prove that it is enough just to compare $LCS\big(cut(A,k), cut(B,0)\big)\text{ }\forall k$. Since we are only looking for the largest common subsequence, and we know that for every pair of $cut(A,i) \text{ and } cut(B,j)$ there is a pair $cut(A,k) text{ and } cut(B,0)$ which has a common subsequence of the same length or greater length. Thus, the longest common subsequence can be found from a $cut(B,0)$, so all we need to compare is $LCS\big(cut(A,k), cut(B,0)\big)\text{ }\forall k$.
     
 
 \end{enumerate}
