@@ -42,10 +42,15 @@ public class CLCSSlow {
       String B = new String(s.next().toCharArray());
 
       int maxLength = -1;
+      int maxCut = 0;
       for (int i = 0; i < A.length(); i++){
         int lengthOfSub = LCS(cut(A, i), B);
-        if (lengthOfSub > maxLength) maxLength = lengthOfSub;
+        if (lengthOfSub > maxLength) {
+          maxLength = lengthOfSub;
+          maxCut = i;
+        }
       }
+      System.out.println(maxCut);
       System.out.println(maxLength);
     }
   }
